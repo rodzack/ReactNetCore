@@ -14,14 +14,16 @@ interface IEquipos {
     equNombreEquipo: string
 }
 
+
 export class Equipos extends React.Component<RouteComponentProps<{}>, MyComponentState>{
 
     constructor(props: any) {
         super(props)
+
         this.state = {
             lEquipo: [],
             nombreEquipo: "",
-            redirect: false
+            redirect: false,
         }
 
         this.handleChange = this.handleChange.bind(this);

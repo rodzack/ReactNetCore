@@ -7,7 +7,9 @@ interface MyComponentState {
     nombreJugador: string
 }
 interface MyComponentProps {
-    idEquipo : number
+    idEquipo: number,
+    listaJugdores: IntJugadores[],
+    actualizarJugadores: () => void
 }
 
 interface IntJugadores {
@@ -25,22 +27,7 @@ export class TablaJugadores extends React.Component<MyComponentProps, MyComponen
             IlistaJugador: [],
             nombreJugador: ""
         }
-        this.actualizarListaJugadores();
-    }
-
-    actualizarListaJugadores() {
-        alert("Entro a listar jugadores");
-        fetch('api/Jugadores/listarJugadores', {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ jugIdEquipo: this.props.idEquipo})
-        }).then(response => response.json() as Promise<IntJugadores[]>)
-            .then(data => {
-                this.setState({ IlistaJugador: data });
-            });
+        this.props.actualizarJugadores();
     }
 
     handleChange(e: any) {
@@ -66,16 +53,15 @@ export class TablaJugadores extends React.Component<MyComponentProps, MyComponen
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(info)
-            }).then(response => response.json())
-                .then(data => { });
-            this.actualizarListaJugadores();
+            }).then(response => {
+                response.json()
+                this.props.actualizarJugadores();
+            })
+            
         }
     }
 
     public render() {
-        let tabla = /*this.state.loading
-            ? <p><em>Loading...</em></p> :*/
-            TablaJugadores.renderlistaJugadores(this.state.IlistaJugador);
         return (
             <div>
                 <form onSubmit={(e) => this.handleSubmit(e)}>
@@ -89,31 +75,28 @@ export class TablaJugadores extends React.Component<MyComponentProps, MyComponen
                     <input type="submit" className="btn btn-primary" value="Crear equipo" />
                 </form>
 
-                {tabla}
+                <table className="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Jugador</th>
+                            <th colSpan={2}>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.props.listaJugdores.map(fila => (
+                                <tr key={fila.jugIdEquipo}>
+                                    <td>{fila.jugNombreJugador}</td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+
             </div>
         )
     }
 
-    private static renderlistaJugadores(IlistaJugador: IntJugadores[]) {
-        return <table className='table'>
-            <thead>
-                <tr>
-                    <th>Id Jugador</th>
-                    <th>Nombre Jugador</th>
-                    <th>IdEquipo</th>
-                </tr>
-            </thead>
-            <tbody>
-                {IlistaJugador.map(lJugador =>
-                    <tr key={lJugador.jugIdJugador}>
-                        <td>{lJugador.jugIdJugador}</td>
-                        <td>{lJugador.jugNombreJugador}</td>
-                        <td>{lJugador.jugIdEquipo}</td>
-                   </tr>
-                )}
-            </tbody>
-        </table>;
-    }
 }
 
 

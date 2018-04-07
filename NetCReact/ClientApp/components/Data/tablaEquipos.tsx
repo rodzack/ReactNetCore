@@ -6,12 +6,11 @@ import { EditarNombre } from './EditarNombre';
 
 
 interface MyComponentState {
-    //SlistaEquipos: lEquipo[]
     showReply: boolean,
     recargarEquipos: boolean
-    idEquipo: number
+    idEquipo: number,
+    lJugador: IJugadores[]
 }
-
 interface MyComponentProps {
     listaEquipos: lEquipo[],
     actualizarEquipos: () => void
@@ -19,6 +18,11 @@ interface MyComponentProps {
 interface lEquipo {
     equIdEquipo: string;
     equNombreEquipo: string;
+}
+interface IJugadores {
+    jugIdJugador: string,
+    jugNombreJugador: string,
+    jugIdEquipo: string,
 }
 
 export class TablaEquipos extends React.Component<MyComponentProps, MyComponentState>{
@@ -28,7 +32,8 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
         this.state = {
             showReply: false,
             recargarEquipos: false,
-            idEquipo: 0
+            idEquipo: 0,
+            lJugador: []
         }
         this.eliminarEquipo = this.eliminarEquipo.bind(this);
     }
@@ -48,22 +53,41 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
         })
     }
 
-    actualizarEstado(PIdEquipo: any) {
-        alert(PIdEquipo+" Entro a actualizar state de jugadores " + this.state.idEquipo);
+    actualizarListaJugadores() {
+        fetch('api/Jugadores/listarJugadores', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ jugIdEquipo: this.state.idEquipo })
+        }).then(response => response.json() as Promise<IJugadores[]>)
+            .then(data => {
+                this.setState({ lJugador: data });
+            });
+    }
 
+    actualizarEstado(PIdEquipo: any) {
         this.setState({
             showReply: true,
             idEquipo: PIdEquipo
         })
+        this.actualizarListaJugadores();
             
-        alert(PIdEquipo+ "Entro a 2 actualizar state de jugadores " + this.state.idEquipo);
     }
 
     actualizarLEquipos() {
         this.props.actualizarEquipos();
     }
 
-     public render() {
+    public render() {
+        let props = {
+            listaJugdores: this.state.lJugador,
+            actualizarJugadores: this.actualizarListaJugadores.bind(this),
+            idEquipo: this.state.idEquipo
+        }
+
+
         return (
                 <div>
                 <table className="table table-bordered">
@@ -96,7 +120,7 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
                     </tbody>
                 </table>
 
-                {this.state.showReply && <TablaJugadores idEquipo={this.state.idEquipo} />}
+                {this.state.showReply && <TablaJugadores {...props} />}
 
                 </div>
         )
