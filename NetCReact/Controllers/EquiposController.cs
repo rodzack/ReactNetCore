@@ -40,16 +40,21 @@ namespace NetCReact.Controllers
         {
             try
             {
-                var Jugadores = db.TblJugadores.FirstOrDefault(x => x.JugIdEquipo == pEquipos.EquIdEquipo);
-                db.TblJugadores.Remove(Jugadores);
-            }
-            catch{
+                db.TblJugadores.RemoveRange(db.TblJugadores.Where(x => x.JugIdEquipo == pEquipos.EquIdEquipo));
+                db.SaveChanges();
+
+                db.TblEquipos.Remove(db.TblEquipos.Where(x => x.EquIdEquipo == pEquipos.EquIdEquipo).FirstOrDefault());
+                db.SaveChanges();
+
+                //TblEquipos equipos = db.TblEquipos.Find(pEquipos.EquIdEquipo);
+                //db.TblEquipos.Remove(equipos);
+                //db.SaveChanges();
 
             }
-
-            TblEquipos equipos =db.TblEquipos.Find(pEquipos.EquIdEquipo);
-            db.TblEquipos.Remove(equipos);
-            db.SaveChanges();
+            catch(Exception e){
+                Console.WriteLine("Error:" + e);
+            }
+            
 
             return Json(new {exitoso = 1 });
         }

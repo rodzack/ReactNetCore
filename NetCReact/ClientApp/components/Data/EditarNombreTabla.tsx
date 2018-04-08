@@ -9,7 +9,7 @@ interface MyComponentProps {
     actualizarEquipos: () => void
 }
 
-export class EditarNombre extends React.Component<MyComponentProps,MyComponensState>{
+export class EditarNombreTabla extends React.Component<MyComponentProps,MyComponensState>{
 
     constructor(props: any) {
         super(props)

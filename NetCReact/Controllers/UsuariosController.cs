@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetCReact.Models;
+using Newtonsoft.Json;
 
 namespace NetCReact.Controllers
 {
@@ -19,14 +20,16 @@ namespace NetCReact.Controllers
         [HttpPost("[action]")]
         public JsonResult validarUsuario([FromBody] TblUsuarios pUsuarios)
         {
-            var IdUsuario = db.TblUsuarios.
+            var cUsuario = db.TblUsuarios.
                 Where(p => p.UsuNombreUsuario == pUsuarios.UsuNombreUsuario && p.UsuContrasenia == pUsuarios.UsuContrasenia).
                 Select(x => new TblUsuarios
                 {
-                    UsuIdUsuario = x.UsuIdUsuario,
-                }).FirstOrDefault();
+                    UsuIdUsuario = x.UsuIdUsuario
+                }).Count();
 
-            return Json(IdUsuario);
+            //var idUsuario = JsonConvert.DeserializeObject(cUsuario);
+
+            return Json(new { idUsuario = cUsuario });
         }
 
         [HttpPost("[action]")]

@@ -53,7 +53,13 @@ export class Login extends React.Component<RouteComponentProps<{}>, MyComponentS
             })
                 .then(response => response.json())
                 .then(data => {
-                    this.setState({ redirect: true })
+                    if (data.idUsuario == 0) {
+                        alert("Usuario Incorrecto");
+                    } else {
+                        alert("Bienvenido");
+                        this.setState({ redirect: true })
+                    }
+
                 });
         }
     }
@@ -65,14 +71,13 @@ export class Login extends React.Component<RouteComponentProps<{}>, MyComponentS
         })
 
     }
-
     
     public render() {
 
         //Para el ruteo
         const { redirect } = this.state;
         if (redirect) {
-            return <Redirect to='/FetchData'/>;
+            return <Redirect to='/Equipos'/>;
         }
 
         return (

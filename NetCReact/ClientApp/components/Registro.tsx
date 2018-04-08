@@ -77,7 +77,7 @@ export class Registro extends React.Component<RouteComponentProps<{}>, MyCompone
     render() {
         const { redirect } = this.state
         if (redirect) {
-            return <Redirect to = '/Login'/>
+            return <Redirect to = '/'/>
         }
 
         return (

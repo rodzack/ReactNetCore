@@ -24,8 +24,11 @@ export class Counter extends React.Component<RouteComponentProps<{}>, CounterSta
     }
 
     incrementCounter() {
+        alert(this.state.currentCount);
         this.setState({
             currentCount: this.state.currentCount + 1
         });
+        alert(this.state.currentCount);
+
     }
 }

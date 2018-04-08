@@ -27,7 +27,7 @@ namespace NetCReact.Controllers
         }
 
         [HttpPost("[action]")]
-        public JsonResult eliminarJugadores(TblJugadores jugadores)
+        public JsonResult eliminarJugadores([FromBody] TblJugadores jugadores)
         {
             TblJugadores jugador = db.TblJugadores.Find(jugadores.JugIdJugador);
             db.TblJugadores.Remove(jugador);
@@ -37,10 +37,17 @@ namespace NetCReact.Controllers
         }
 
         [HttpPost("[action]")]
-        public JsonResult actualizarJugadores(TblJugadores jugadores)
+        public JsonResult actualizarJugadores([FromBody] TblJugadores jugadores)
         {
-            db.Entry(jugadores).State = EntityState.Modified;
+            var jugador = new TblJugadores();
+            jugador.JugNombreJugador = jugadores.JugNombreJugador;
+            jugador.JugIdJugador = jugadores.JugIdJugador;
+            db.TblJugadores.Attach(jugador);
+            db.Entry(jugador).Property(x => x.JugNombreJugador).IsModified = true;
             db.SaveChanges();
+
+            //db.Entry(jugadores).State = EntityState.Modified;
+            //db.SaveChanges();
             return Json(new { exitoso = 1 });
         }
 

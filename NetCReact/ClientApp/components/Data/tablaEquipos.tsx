@@ -2,7 +2,7 @@
 import { RouteComponentProps } from 'react-router';
 import { Link, NavLink, Redirect } from 'react-router-dom';
 import { TablaJugadores } from './TablaJugadores';
-import { EditarNombre } from './EditarNombre';
+import { EditarNombreTabla } from './EditarNombreTabla';
 
 
 interface MyComponentState {
@@ -36,6 +36,7 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
             lJugador: []
         }
         this.eliminarEquipo = this.eliminarEquipo.bind(this);
+        this.actualizarListaJugadores = this.actualizarListaJugadores.bind(this);
     }
 
     eliminarEquipo(IdEquipo: any) {
@@ -50,6 +51,7 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
         }).then(response => {
             response.json()
             this.props.actualizarEquipos();
+            this.actualizarEstado(0,false);
         })
     }
 
@@ -61,19 +63,18 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ jugIdEquipo: this.state.idEquipo })
-        }).then(response => response.json() as Promise<IJugadores[]>)
+        }).then(response => response.json())
             .then(data => {
                 this.setState({ lJugador: data });
             });
     }
 
-    actualizarEstado(PIdEquipo: any) {
+    actualizarEstado(PIdEquipo: any, estado: boolean) {
         this.setState({
-            showReply: true,
+            showReply: estado,
             idEquipo: PIdEquipo
-        })
-        this.actualizarListaJugadores();
-            
+        }, this.actualizarListaJugadores);
+           
     }
 
     actualizarLEquipos() {
@@ -102,11 +103,11 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
                             this.props.listaEquipos.map(fila => (
                                 <tr key={fila.equIdEquipo}>
                                     <td>{fila.equNombreEquipo}</td>
-                                    <td><input type="submit" value="Agregar Jugadores" className="btn btn-success"
-                                        onClick={this.actualizarEstado.bind(this, fila.equIdEquipo)} /></td>
+                                    <td><input type="submit" value="Administrar jugadores" className="btn btn-success"
+                                        onClick={this.actualizarEstado.bind(this, fila.equIdEquipo, true)} /></td>
                                     <td>
 
-                                        <EditarNombre {...{
+                                        <EditarNombreTabla {...{
                                             idEquipo: fila.equIdEquipo,
                                             actualizarEquipos: this.actualizarLEquipos.bind(this)
                                         }} />
@@ -123,12 +124,6 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
                 {this.state.showReply && <TablaJugadores {...props} />}
 
                 </div>
-        )
-              /*
-                {this.state.showReply && <TablaJugadores idEquipo={this.state.idEquipo}/>}
-
-               */
-
-        
+        )       
     }
 }
