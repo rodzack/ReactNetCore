@@ -86,14 +86,18 @@ export class TablaJugadores extends React.Component<MyComponentProps, MyComponen
         return (
             <div>
                 <form onSubmit={(e) => this.handleSubmit(e)}>
-                    <div className="form-group">
-                        <label>Ingrese el nombre del jugador</label>
-                        <input type="text" name="nombreJugador" className="form-control"
+                    <div className="form-group text-center row marginFormEquiposP">
+                        <label className="col-sm-4">Ingrese el nombre del jugador</label>
+                        <div className="col-sm-4 marginlabel">
+                            <input type="text" name="nombreJugador" className="form-control col-sm-3 "
                             placeholder="Nombre del jugador" value={this.state.nombreJugador}
-                            onChange={(e) => this.handleChange(e)} />
+                                onChange={(e) => this.handleChange(e)} />
+                        </div>
+                    <div className="col-sm-4">
+                            <input type="submit" className="btn btn-primary marginright" value="Crear jugador" />
+                        </div>
                     </div>
 
-                    <input type="submit" className="btn btn-primary" value="Crear jugador" />
                 </form>
 
                 <table className="table table-bordered">
@@ -114,7 +118,7 @@ export class TablaJugadores extends React.Component<MyComponentProps, MyComponen
                                             actualizarJugadores: this.actualizarLJugadores.bind(this)
                                         }} />
                                     </td>
-                                    <td><button type="button" className="btn btn-danger"
+                                    <td><button type="button" className="btn btn-danger center-block"
                                         onClick={this.eliminarJugador.bind(this, fila.jugIdJugador)}>Eliminar</button></td>
                                 </tr>
                             ))

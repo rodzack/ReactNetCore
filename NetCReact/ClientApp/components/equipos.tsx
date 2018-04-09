@@ -78,16 +78,20 @@ export class Equipos extends React.Component<RouteComponentProps<{}>, MyComponen
             actualizarEquipos: this.actualizarEquipos.bind(this)
         }
 
-        return (<div>
+        return (<div className="equipos center-block marginFormEquipo">
             <form onSubmit={(e) => this.handleSubmit(e)}>
-                <div className="form-group">
-                    <label>Ingrese el nombre del equipo</label>
-                    <input type="text" name="nombreEquipo" className="form-control"
+                <div className="form-group text-center row marginFormEquiposP">
+                    <label className="col-sm-4 col-form-label marginlabel">Ingrese el nombre del equipo</label>
+                    <div className="col-sm-4 pr10 marginInputNombreEquipo">
+                    <input type="text" name="nombreEquipo" className="form-control tamanioInput"
                         placeholder="Nombre del equipo" value={this.state.nombreEquipo}
-                        onChange={(e) => this.handleChange(e)} />
+                            onChange={(e) => this.handleChange(e)} />
+                    </div>
+                    <div className="col-sm-4 ">
+                        <input type="submit" className="btn btn-primary marginright" value="Crear equipo" />
+                    </div>
                 </div>
 
-                <input type="submit" className="btn btn-primary" value="Crear equipo" />
             </form>
 
             <TablaEquipos {...props}/>

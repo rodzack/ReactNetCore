@@ -81,23 +81,23 @@ export class Registro extends React.Component<RouteComponentProps<{}>, MyCompone
         }
 
         return (
-            <div>
+            <div className="registro center-block marginFormEquipo text-center tamanioInput">
                 <form onSubmit={(e) => this.handleSubmit(e)}>
                     <div className="form-group">
                         <label>Nombre de usuario</label>
-                        <input type="text" name="NombreUsuario" className="form-control"
+                        <input type="text" name="NombreUsuario" className="form-control tamanioInput center-block"
                             placeholder="Ingrese su usuario" value={this.state.NombreUsuario}
                             onChange={(e) => this.handleChange(e)} />
                     </div>
                     <div className="form-group">
                         <label>Contraseña</label>
-                        <input type="password" name="ContraseniaUno" className="form-control"
+                        <input type="password" name="ContraseniaUno" className="form-control tamanioInput center-block"
                             placeholder="Ingrese su contraseña" value={this.state.ContraseniaUno}
                             onChange={(e) => this.handleChange(e)} />
                     </div>
                     <div className="form-group">
                         <label>ConfirmarContraseña</label>
-                        <input type="password" name="ContraseniaDos" className="form-control"
+                        <input type="password" name="ContraseniaDos" className="form-control tamanioInput center-block"
                             placeholder="Confirme su contraseña" value={this.state.ContraseniaDos}
                             onChange={(e) => this.handleChange(e)} />
                     </div>

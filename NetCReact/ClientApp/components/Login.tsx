@@ -7,7 +7,7 @@ interface MyComponentProps { }
 interface MyComponentState {
     NombreUsuario: string,
     Contrasenia: string,
-    redirect : boolean
+    redirect : string
 }
 
 export class Login extends React.Component<RouteComponentProps<{}>, MyComponentState>{
@@ -17,10 +17,11 @@ export class Login extends React.Component<RouteComponentProps<{}>, MyComponentS
         this.state = {
             NombreUsuario: "",
             Contrasenia: "",
-            redirect: false
+            redirect: ""
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.actualizarRedirect = this.actualizarRedirect.bind(this);
     }
 
     public validarCampos(){
@@ -54,10 +55,10 @@ export class Login extends React.Component<RouteComponentProps<{}>, MyComponentS
                 .then(response => response.json())
                 .then(data => {
                     if (data.idUsuario == 0) {
-                        alert("Usuario Incorrecto");
+                        alert("Datos Incorrectos");
                     } else {
                         alert("Bienvenido");
-                        this.setState({ redirect: true })
+                        this.setState({ redirect: "/Equipos" })
                     }
 
                 });
@@ -69,37 +70,56 @@ export class Login extends React.Component<RouteComponentProps<{}>, MyComponentS
         this.setState({
             [name]: value
         })
+    }
+
+    actualizarRedirect(redireccion: string) {
+        this.setState({
+            redirect: "/Registro" 
+        })
 
     }
+
+
     
     public render() {
 
         //Para el ruteo
         const { redirect } = this.state;
+        let direcion = this.state.redirect;
         if (redirect) {
-            return <Redirect to='/Equipos'/>;
+            return <Redirect to={direcion}/>;
         }
 
         return (
-            <div>
-                <form onSubmit={(e) => this.handleSubmit(e)}>
+            <div className="login center-block">
+                <div className="marginForm">
+                <form onSubmit={(e) => this.handleSubmit(e)} className="marginL">
 
-                    <div className="form-group">
-                        <label>Usuario</label>
-                        <input type="text" name="NombreUsuario" className="form-control"
+                    <div className="form-group text-center">
+                        <label className="center-block">Usuario</label>
+                        <input type="text" name="NombreUsuario" className="form-control tamanioInput center-block"
                             placeholder="Ingrese su usuario" value={this.state.NombreUsuario}
                             onChange={(e) => this.handleChange(e)} />
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group text-center">
                         <label>Contrase&ntilde;a</label>
-                        <input type="password" name="Contrasenia" className="form-control"
+                        <input type="password" name="Contrasenia" className="form-control tamanioInput center-block"
                             placeholder="Ingrese su contrase&ntilde;a" value={this.state.Contrasenia}
                             onChange={(e) => this.handleChange(e)} />
                     </div>
 
-                    <input type="submit" className="btn btn-primary" value="Ingresar" />
-                </form>
+                        <div className="row">
+                            <div className="col-sm-2">
+                                <input type="submit" className="btn btn-primary botonIngresar" value="Ingresar" />
+                            </div>
+                            <div className="col-sm-2">
+                                <button type="button" className="btn btn-success botonRegistrarse"
+                                    onClick={this.actualizarRedirect.bind("/Registro")} >Registrarse</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         )
     }

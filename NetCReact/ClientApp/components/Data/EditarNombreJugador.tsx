@@ -59,7 +59,7 @@ export class EditarNombreJugador extends React.Component<MyComponentProps,MyComp
                             onChange={(e) => this.handleChange(e)} />
                     </div>
 
-                    <input type="submit" value="Modificar Nombre" className="btn btn-primary" />
+                    <input type="submit" value="Modificar Nombre" className="btn btn-primary center-block" />
                 </form>
 
             </div>

@@ -59,7 +59,7 @@ export class EditarNombreTabla extends React.Component<MyComponentProps,MyCompon
                             onChange={(e) => this.handleChange(e)} />
                     </div>
 
-                    <input type="submit" value="Modificar Nombre" className="btn btn-primary" />
+                    <input type="submit" value="Modificar Nombre" className="btn btn-primary center-block" />
                 </form>
 
             </div>

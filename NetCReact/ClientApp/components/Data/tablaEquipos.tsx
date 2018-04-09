@@ -40,19 +40,23 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
     }
 
     eliminarEquipo(IdEquipo: any) {
-        //console.log(IdEquipo);
-        fetch("api/Equipos/eliminarEquipos", {
-            method: 'post',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({EquIdEquipo: IdEquipo})
-        }).then(response => {
-            response.json()
-            this.props.actualizarEquipos();
-            this.actualizarEstado(0,false);
-        })
+        var confirmacion = confirm("Si se elimina el equipo tambien se eliminaran los jugadores que este tenga ¿Desea continuar?");
+        if (confirmacion == true) {
+            fetch("api/Equipos/eliminarEquipos", {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ EquIdEquipo: IdEquipo })
+            }).then(response => {
+                response.json()
+                this.props.actualizarEquipos();
+                this.actualizarEstado(0, false);
+            })
+        } 
+
+
     }
 
     actualizarListaJugadores() {
@@ -90,7 +94,7 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
 
 
         return (
-                <div>
+            <div className="tablaEquipos center-block marginFormEquipo">
                 <table className="table table-bordered">
                     <thead>
                         <tr>
@@ -103,7 +107,7 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
                             this.props.listaEquipos.map(fila => (
                                 <tr key={fila.equIdEquipo}>
                                     <td>{fila.equNombreEquipo}</td>
-                                    <td><input type="submit" value="Administrar jugadores" className="btn btn-success"
+                                    <td><input type="submit" value="Administrar jugadores" className="btn btn-success center-block"
                                         onClick={this.actualizarEstado.bind(this, fila.equIdEquipo, true)} /></td>
                                     <td>
 
@@ -113,7 +117,7 @@ export class TablaEquipos extends React.Component<MyComponentProps, MyComponentS
                                         }} />
                                     
                                     </td>
-                                    <td><button type="button" className="btn btn-danger"
+                                    <td><button type="button" className="btn btn-danger center-block"
                                         onClick={this.eliminarEquipo.bind(this, fila.equIdEquipo)}>Eliminar</button></td>
                                 </tr>
                             ))
